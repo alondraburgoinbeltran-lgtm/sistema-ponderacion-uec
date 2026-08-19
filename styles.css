@@ -1,0 +1,842 @@
+/* =========================================================
+   1. PALETA INSTITUCIONAL
+   Cambia aquí los colores globales de toda la app.
+   ========================================================= */
+:root {
+  --green:#0b4f45;
+  --green2:#073e37;
+  --gold:#d5b677;
+  --cream:#f4ead5;
+  --bg:#f6f7f5;
+  --text:#17211f;
+  --muted:#6f7875;
+  --border:#e2e6e3;
+  --red:#cf3e36;
+  --ok:#0d7a52;
+  --shadow:0 10px 30px rgba(22,45,38,.08)
+}
+
+* {
+  box-sizing:border-box
+}
+
+body {
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text)
+}
+
+button,input,select {
+  font:inherit
+}
+
+/* =========================================================
+   2. PANTALLA DE INICIO
+   ========================================================= */
+.login {
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:minmax(360px,520px) 1fr;
+  background:#eef1ef
+}
+
+.login-card {
+  background:linear-gradient(rgba(6,65,56,.94),rgba(4,62,54,.96)),url('assets/logo-uec.png') center/70% no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px
+}
+
+.login-panel {
+  width:100%;
+  max-width:400px;
+  text-align:center;
+  color:white
+}
+
+.login-panel img {
+  width:190px;
+  height:190px;
+  object-fit:contain
+}
+
+.login-panel h1 {
+  font-size:30px;
+  line-height:1.25;
+  margin:28px 0 12px;
+  letter-spacing:.6px
+}
+
+.login-panel h1 span {
+  color:var(--gold)
+}
+
+.login-panel p {
+  line-height:1.6
+}
+
+.goldline {
+  width:180px;
+  height:2px;
+  background:var(--gold);
+  margin:28px auto
+}
+
+.enter {
+  background:linear-gradient(#f6e7c7,#e6ca91);
+  border:0;
+  border-radius:9px;
+  padding:16px 34px;
+  font-weight:800;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:var(--shadow)
+}
+
+.login-empty {
+  background:linear-gradient(135deg,#f8faf9,#e8eeeb)
+}
+
+/* =========================================================
+   3. ESTRUCTURA GENERAL + MENÚ LATERAL
+   ========================================================= */
+.shell {
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:250px 1fr
+}
+
+.sidebar {
+  background:linear-gradient(#0a5146,#073d36);
+  color:white;
+  padding:20px 14px;
+  display:flex;
+  flex-direction:column;
+  position:sticky;
+  top:0;
+  height:100vh
+}
+
+.brand {
+  text-align:center;
+  padding:2px 8px 18px
+}
+
+.brand img {
+  width:112px;
+  height:112px;
+  object-fit:contain
+}
+
+.nav {
+  display:grid;
+  gap:8px
+}
+
+.nav button {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:12px 13px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#fff;
+  text-align:left;
+  cursor:pointer
+}
+
+.nav button.active,.nav button:hover {
+  background:rgba(255,255,255,.13)
+}
+
+.sidefoot {
+  margin-top:auto;
+  border-top:1px solid rgba(255,255,255,.18);
+  padding:16px 8px;
+  font-size:11px;
+  line-height:1.4
+}
+
+/* =========================================================
+   4. ENCABEZADO Y ÁREA PRINCIPAL
+   ========================================================= */
+.main {
+  padding:26px 30px 40px;
+  min-width:0
+}
+
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:start;
+  margin-bottom:20px
+}
+
+.title h1 {
+  margin:0 0 5px;
+  font-size:28px
+}
+
+.subtitle {
+  color:var(--muted);
+  font-size:13px
+}
+
+.yearbox {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:12px
+}
+
+.yearbox select {
+  padding:9px 34px 9px 10px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:white
+}
+
+/* =========================================================
+   5. TARJETAS, KPIs Y GRÁFICAS
+   ========================================================= */
+.grid4 {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px
+}
+
+.card {
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  box-shadow:0 1px 0 rgba(0,0,0,.01);
+  padding:18px;
+  overflow:hidden
+}
+
+.kpi {
+  display:flex;
+  gap:14px;
+  align-items:center;
+  min-height:104px
+}
+
+.ico {
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:#eff4f2;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  color:var(--green)
+}
+
+.kpi .num {
+  font-size:28px;
+  font-weight:800;
+  margin-top:4px
+}
+
+.kpi small {
+  color:var(--muted)
+}
+
+.grid2 {
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:14px;
+  margin-top:14px
+}
+
+.section-title {
+  font-weight:800;
+  margin-bottom:14px
+}
+
+.bars {
+  display:grid;
+  gap:20px
+}
+
+.barrow {
+  display:grid;
+  grid-template-columns:165px 1fr 76px;
+  gap:12px;
+  align-items:center;
+  font-size:13px
+}
+
+.track {
+  height:8px;
+  background:#e8ecea;
+  border-radius:20px;
+  overflow:hidden
+}
+
+.fill {
+  height:100%;
+  background:var(--green);
+  border-radius:20px
+}
+
+.insight {
+  margin-top:14px;
+  border:1px solid #e2cda8;
+  background:#fffaf2;
+  padding:14px 16px;
+  border-radius:9px
+}
+
+/* =========================================================
+   6. PROYECTO DE PONDERACIÓN
+   ========================================================= */
+.project-grid {
+  display:grid;
+  gap:14px
+}
+
+.intro-icons {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px
+}
+
+.mini {
+  text-align:center;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#fff
+}
+
+.architecture {
+  display:grid;
+  grid-template-columns:160px repeat(3,1fr);
+  gap:12px;
+  align-items:stretch
+}
+
+.score100 {
+  border-radius:999px;
+  background:var(--green);
+  color:white;
+  width:130px;
+  height:130px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  margin:auto;
+  font-size:30px;
+  font-weight:800
+}
+
+.scorebox {
+  border-radius:9px;
+  padding:18px;
+  text-align:center;
+  background:#f8faf9;
+  border:1px solid var(--border)
+}
+
+.scorebox b {
+  font-size:28px
+}
+
+.risklist {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px 28px;
+  font-size:13px
+}
+
+/* =========================================================
+   7. BOTONES, TABLAS Y CATÁLOGO
+   ========================================================= */
+.toolbar {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px
+}
+
+.btn {
+  border:1px solid var(--border);
+  background:white;
+  padding:10px 14px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:700
+}
+
+.btn.primary {
+  background:var(--green);
+  color:white;
+  border-color:var(--green)
+}
+
+.btn.gold {
+  background:var(--cream);
+  border-color:#dec99e
+}
+
+.tablewrap {
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:9px
+}
+
+.table {
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  font-size:12px
+}
+
+.table th,.table td {
+  padding:12px 10px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  vertical-align:middle
+}
+
+.table th {
+  font-size:10px;
+  text-transform:uppercase;
+  color:#59625f;
+  background:#fafbfa
+}
+
+.status-ok {
+  color:var(--ok);
+  font-weight:800
+}
+
+.status-bad {
+  color:var(--red);
+  font-weight:800
+}
+
+.catalog-kpis {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:14px 0
+}
+
+.smallk {
+  text-align:center
+}
+
+.smallk b {
+  display:block;
+  font-size:24px;
+  color:var(--green)
+}
+
+/* =========================================================
+   8. NUEVO EJERCICIO / FORMULARIOS
+   ========================================================= */
+.wizard {
+  display:flex;
+  justify-content:space-between;
+  gap:5px;
+  margin:8px 0 22px
+}
+
+.step {
+  flex:1;
+  text-align:center;
+  font-size:10px;
+  color:var(--muted);
+  position:relative
+}
+
+.step:before {
+  content:attr(data-n);
+  display:grid;
+  place-items:center;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  border:1px solid #cfd6d2;
+  background:white;
+  margin:0 auto 6px
+}
+
+.step.active:before {
+  background:var(--green);
+  color:white;
+  border-color:var(--green)
+}
+
+.formgrid {
+  display:grid;
+  grid-template-columns:1fr 270px;
+  gap:14px
+}
+
+.form-main {
+  display:grid;
+  gap:14px
+}
+
+.fields {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px
+}
+
+.field {
+  display:grid;
+  gap:6px
+}
+
+.field label {
+  font-size:11px;
+  font-weight:700
+}
+
+.field input,.field select {
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:white
+}
+
+.choice {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap
+}
+
+.toggle {
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px
+}
+
+.toggle h4 {
+  margin:0 0 8px
+}
+
+.resultcard {
+  position:sticky;
+  top:25px;
+  height:max-content;
+  text-align:center
+}
+
+.bigscore {
+  font-size:38px;
+  font-weight:900;
+  color:var(--green)
+}
+
+.progress {
+  height:7px;
+  background:#e7ebe9;
+  border-radius:10px;
+  overflow:hidden
+}
+
+.progress>div {
+  height:100%;
+  background:var(--green)
+}
+
+.hidden {
+  display:none!important
+}
+
+/* =========================================================
+   9. VENTANAS MODALES Y ESTADOS VACÍOS
+   ========================================================= */
+.modal {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  display:grid;
+  place-items:center;
+  padding:20px;
+  z-index:10
+}
+
+.modalbox {
+  width:min(720px,96vw);
+  max-height:88vh;
+  overflow:auto;
+  background:white;
+  border-radius:12px;
+  padding:22px
+}
+
+.empty {
+  padding:50px 20px;
+  text-align:center;
+  color:var(--muted);
+  border:1px dashed #cfd7d3;
+  border-radius:10px;
+  background:#fbfcfb
+}
+
+/* =========================================================
+   10. RESPONSIVE: TABLET Y MÓVIL
+   ========================================================= */
+@media(max-width:1000px) {
+  .shell {
+    grid-template-columns:78px 1fr
+  }
+
+  .brand img {
+    width:52px;
+    height:52px
+  }
+
+  .nav button span,.sidefoot {
+    display:none
+  }
+
+  .nav button {
+    justify-content:center
+  }
+
+  .grid4,.intro-icons,.catalog-kpis {
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .architecture {
+    grid-template-columns:1fr 1fr
+  }
+
+  .formgrid {
+    grid-template-columns:1fr
+  }
+
+  .resultcard {
+    position:static
+  }
+
+  .grid2 {
+    grid-template-columns:1fr
+  }
+
+}
+
+@media(max-width:650px) {
+  .login {
+    grid-template-columns:1fr
+  }
+
+  .login-empty {
+    display:none
+  }
+
+  .main {
+    padding:18px 14px
+  }
+
+  .shell {
+    grid-template-columns:64px 1fr
+  }
+
+  .grid4,.intro-icons,.catalog-kpis,.fields,.architecture {
+    grid-template-columns:1fr
+  }
+
+  .topbar {
+    flex-direction:column
+  }
+
+  .barrow {
+    grid-template-columns:120px 1fr 60px
+  }
+
+  .wizard {
+    overflow:auto
+  }
+
+  .step {
+    min-width:85px
+  }
+
+}
+
+/* =========================================================
+   CATÁLOGO · CARGA Y REVISIÓN DEL PROGRAMA ANUAL
+   Estas clases pertenecen únicamente al modal que procesa PDF.
+   ========================================================= */
+
+.catalog-upload-modal{
+  width:min(980px,94vw);
+  max-height:90vh;
+  overflow:auto;
+}
+
+.modal-head,
+.catalog-preview-head,
+.modal-actions,
+.pdf-process-box{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.modal-head{
+  padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+
+.modal-close{
+  width:36px;
+  height:36px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#fff;
+  font-size:22px;
+  cursor:pointer;
+}
+
+.catalog-upload-fields{
+  margin-top:18px;
+}
+
+.pdf-process-box{
+  margin-top:18px;
+  padding:16px 18px;
+  border:1px solid #e6dbc3;
+  background:#fbf8f0;
+  border-radius:10px;
+}
+
+.pdf-process-box p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.catalog-message{
+  margin-top:14px;
+  padding:12px 14px;
+  border-radius:9px;
+  border:1px solid var(--border);
+  font-size:13px;
+  line-height:1.5;
+}
+
+.catalog-message.info{
+  background:#f6f8f7;
+}
+
+.catalog-message.loading{
+  background:#f8f5ed;
+  border-color:#dfcfaa;
+}
+
+.catalog-message.success{
+  background:#eef7f2;
+  border-color:#bfdaca;
+  color:#184f38;
+}
+
+.catalog-message.warning{
+  background:#fff8e9;
+  border-color:#ead29b;
+  color:#725214;
+}
+
+.catalog-message.error{
+  background:#fff1f1;
+  border-color:#e7baba;
+  color:#8a2828;
+}
+
+.catalog-preview{
+  margin-top:18px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  background:#fff;
+}
+
+.catalog-preview-head{
+  padding:16px 18px;
+  border-bottom:1px solid var(--border);
+}
+
+.catalog-preview-table{
+  max-height:360px;
+  overflow:auto;
+}
+
+.catalog-preview-table .table{
+  margin:0;
+}
+
+.catalog-preview-table .candidate-name{
+  width:100%;
+  min-width:320px;
+  padding:9px 10px;
+  border:1px solid transparent;
+  border-radius:7px;
+  background:#fafafa;
+  font:inherit;
+}
+
+.catalog-preview-table .candidate-name:focus{
+  outline:none;
+  border-color:#b9a46f;
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(185,164,111,.12);
+}
+
+.catalog-check-col{
+  width:74px;
+  text-align:center;
+}
+
+.catalog-action-col{
+  width:72px;
+  text-align:center;
+}
+
+.icon-btn{
+  width:30px;
+  height:30px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:#fff;
+  cursor:pointer;
+  font-size:18px;
+  line-height:1;
+}
+
+.icon-btn.danger:hover{
+  background:#fff1f1;
+  border-color:#dfb4b4;
+  color:#a32929;
+}
+
+.modal-actions{
+  margin-top:18px;
+  justify-content:flex-end;
+}
+
+@media (max-width:760px){
+  .modal-head,
+  .catalog-preview-head,
+  .pdf-process-box{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .catalog-preview-table .candidate-name{
+    min-width:230px;
+  }
+}
