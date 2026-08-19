@@ -54,13 +54,152 @@ function years() {
 /* =========================================================
    4. ESTRUCTURA VISUAL / NAVEGACIÓN
    ========================================================= */
-function layout(content,title,sub,showYear=true){return `<div class="shell"><aside class="sidebar"><div class="brand"><img src="assets/logo-uec.png"></div><div class="nav">${menu.map(m=>`<button data-page="${m[0]}" class="${state.page===m[0]?'active':''}">${m[1]} <span>${m[2]}</span></button>`).join('')}</div><div class="sidefoot">Unidad de Evaluación y Control<br>CVASEBCS</div></aside><main class="main"><div class="topbar"><div class="title"><h1>${title}</h1><div class="subtitle">${sub}</div></div>${showYear?`<div class="yearbox">Ejercicio fiscal: <select id="yearSel">${years().map(y=>`<option ${y===state.year?'selected':''}>${y}</option>`).join('')}</select></div>`:''}</div>${content}</main></div>`}
-function bindNav(){ $$('.nav button').forEach(b=>b.onclick=()=>{state.page=b.dataset.page;
-state.step=1;
-render()});
- const y=$('#yearSel');
- if(y)y.onchange=e=>{state.year=+e.target.value;
-render()}}
+function layout(
+  content,
+  title,
+  sub,
+  showYear = true
+) {
+  const navButtons = menu
+    .map((item) => {
+      const activeClass =
+        state.page === item[0]
+          ? 'active'
+          : '';
+
+      return `
+        <button
+          data-page="${item[0]}"
+          class="${activeClass}"
+          type="button"
+        >
+          ${item[1]}
+          <span>${item[2]}</span>
+        </button>
+      `;
+    })
+    .join('');
+
+  const yearOptions = years()
+    .map((year) => {
+      const selected =
+        year === state.year
+          ? 'selected'
+          : '';
+
+      return `
+        <option ${selected}>
+          ${year}
+        </option>
+      `;
+    })
+    .join('');
+
+  const yearBox = showYear
+    ? `
+      <div class="yearbox">
+        Ejercicio fiscal:
+        <select id="yearSel">
+          ${yearOptions}
+        </select>
+      </div>
+    `
+    : '';
+
+  return `
+    <div class="shell">
+
+      <aside class="sidebar">
+
+        <div class="brand">
+          <img
+            src="assets/logo-uec.png"
+            alt="UEC"
+          >
+        </div>
+
+        <div class="nav">
+          ${navButtons}
+        </div>
+
+        <div class="sidebar-bottom">
+
+          <button
+            class="logout-btn"
+            id="logoutBtn"
+            type="button"
+            title="Cerrar y volver al inicio"
+          >
+            <span class="logout-icon">↪</span>
+            <span>Cerrar</span>
+          </button>
+
+          <div class="sidefoot">
+            Unidad de Evaluación y Control
+            <br>
+            CVASEBCS
+          </div>
+
+        </div>
+
+      </aside>
+
+      <main class="main">
+
+        <div class="topbar">
+
+          <div class="title">
+            <h1>${title}</h1>
+
+            <div class="subtitle">
+              ${sub}
+            </div>
+          </div>
+
+          ${yearBox}
+
+        </div>
+
+        ${content}
+
+      </main>
+
+    </div>
+  `;
+}
+
+function bindNav() {
+  $$('.nav button').forEach((button) => {
+    button.onclick = () => {
+      state.page = button.dataset.page;
+      state.step = 1;
+      render();
+    };
+  });
+
+  const yearSelect = $('#yearSel');
+
+  if (yearSelect) {
+    yearSelect.onchange = (event) => {
+      state.year = +event.target.value;
+      render();
+    };
+  }
+
+  const logoutButton = $('#logoutBtn');
+
+  if (logoutButton) {
+    logoutButton.onclick = () => {
+      sessionStorage.removeItem('in');
+
+      state.page = 'project';
+      state.step = 1;
+      state.current = null;
+
+      render();
+    };
+  }
+}
 
 /* =========================================================
    5. PANTALLA DE INICIO
@@ -69,7 +208,8 @@ render()}}
 function login() {
   document.querySelector('#app').innerHTML = `
     <div class="login">
-      <div class="login-overlay"></div>
+      <div class="login-overlay">
+</div>
 
       <main class="login-content">
         <div class="login-panel">
@@ -127,7 +267,91 @@ function login() {
    6. MÓDULO: PROYECTO DE PONDERACIÓN
    Contenido informativo/metodológico del proyecto.
    ========================================================= */
-function project(){let c=`<div class="project-grid"><div class="card"><div class="section-title">¿Qué es el proyecto?</div><p>El modelo traduce el cumplimiento normativo de cada ente fiscalizado en una calificación única, objetiva y trazable, que sirve como base técnica para determinar la aprobación de la Cuenta Pública.</p><div class="intro-icons"><div class="mini"><b>◎ Objetividad</b><small><br>Reglas explícitas de puntuación.</small></div><div class="mini"><b>≋ Comparabilidad</b><small><br>Escala común de 100 puntos.</small></div><div class="mini"><b>⌘ Trazabilidad</b><small><br>Cada resultado se vincula con evidencia.</small></div><div class="mini"><b>△ Alerta temprana</b><small><br>Criterios mayores independientes del puntaje.</small></div></div></div><div class="card"><div class="section-title">Arquitectura del modelo</div><div class="architecture"><div class="score100">100<br><span style="font-size:13px">puntos</span></div><div class="scorebox"><b>85</b><br>Variables de Riesgo</div><div class="scorebox"><b>6</b><br>Control y Transparencia</div><div class="scorebox"><b>9</b><br>Rendición de Cuentas</div></div></div><div class="card"><div class="section-title">Distribución de Variables de Riesgo · 85 puntos</div><div class="risklist"><div>% Importe de observaciones solventadas <b>35 pts</b></div><div>Cuenta Pública conforme a LFyRC <b>6 pts</b></div><div>% Cantidad de observaciones solventadas <b>15 pts</b></div><div>Obra Pública <b>6 pts</b></div><div>Reincidencia <b>10 pts</b></div><div>Ley de Adquisiciones y Servicios <b>5 pts</b></div><div>Sistema Contable – SEvAC <b>7 pts</b></div><div>Informe de Avance de Gestión Financiera <b>1 pt</b></div></div></div><div class="grid2"><div class="card"><div class="section-title">Criterios mayores</div><p><b>1.</b> Entrega de Cuenta Pública en tiempo</p><p><b>2.</b> Sistema Contable Armonizado</p><div class="insight"><b>Regla de aprobación:</b> si cualquiera obtiene “NO”, la clasificación final es NO APROBADA por criterio mayor, independientemente del puntaje.</div></div><div class="card"><div class="section-title">Metodología de ajuste</div><p><b>Ente con obra pública:</b> base de 100 puntos.</p><p><b>Ente sin obra pública:</b> base de 94 puntos.</p><div class="insight">Puntaje final = (Puntos obtenidos × 100) ÷ Base aplicable</div></div></div></div>`;
+function project(){let c=`<div class="project-grid">
+<div class="card">
+<div class="section-title">¿Qué es el proyecto?</div>
+<p>El modelo traduce el cumplimiento normativo de cada ente fiscalizado en una calificación única, objetiva y trazable, que sirve como base técnica para determinar la aprobación de la Cuenta Pública.</p>
+<div class="intro-icons">
+<div class="mini">
+<b>◎ Objetividad</b>
+<small>
+<br>Reglas explícitas de puntuación.</small>
+</div>
+<div class="mini">
+<b>≋ Comparabilidad</b>
+<small>
+<br>Escala común de 100 puntos.</small>
+</div>
+<div class="mini">
+<b>⌘ Trazabilidad</b>
+<small>
+<br>Cada resultado se vincula con evidencia.</small>
+</div>
+<div class="mini">
+<b>△ Alerta temprana</b>
+<small>
+<br>Criterios mayores independientes del puntaje.</small>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="section-title">Arquitectura del modelo</div>
+<div class="architecture">
+<div class="score100">100<br>
+<span style="font-size:13px">puntos</span>
+</div>
+<div class="scorebox">
+<b>85</b>
+<br>Variables de Riesgo</div>
+<div class="scorebox">
+<b>6</b>
+<br>Control y Transparencia</div>
+<div class="scorebox">
+<b>9</b>
+<br>Rendición de Cuentas</div>
+</div>
+</div>
+<div class="card">
+<div class="section-title">Distribución de Variables de Riesgo · 85 puntos</div>
+<div class="risklist">
+<div>% Importe de observaciones solventadas <b>35 pts</b>
+</div>
+<div>Cuenta Pública conforme a LFyRC <b>6 pts</b>
+</div>
+<div>% Cantidad de observaciones solventadas <b>15 pts</b>
+</div>
+<div>Obra Pública <b>6 pts</b>
+</div>
+<div>Reincidencia <b>10 pts</b>
+</div>
+<div>Ley de Adquisiciones y Servicios <b>5 pts</b>
+</div>
+<div>Sistema Contable – SEvAC <b>7 pts</b>
+</div>
+<div>Informe de Avance de Gestión Financiera <b>1 pt</b>
+</div>
+</div>
+</div>
+<div class="grid2">
+<div class="card">
+<div class="section-title">Criterios mayores</div>
+<p>
+<b>1.</b> Entrega de Cuenta Pública en tiempo</p>
+<p>
+<b>2.</b> Sistema Contable Armonizado</p>
+<div class="insight">
+<b>Regla de aprobación:</b> si cualquiera obtiene “NO”, la clasificación final es NO APROBADA por criterio mayor, independientemente del puntaje.</div>
+</div>
+<div class="card">
+<div class="section-title">Metodología de ajuste</div>
+<p>
+<b>Ente con obra pública:</b> base de 100 puntos.</p>
+<p>
+<b>Ente sin obra pública:</b> base de 94 puntos.</p>
+<div class="insight">Puntaje final = (Puntos obtenidos × 100) ÷ Base aplicable</div>
+</div>
+</div>
+</div>`;
  $('#app').innerHTML=layout(c,'Proyecto de Ponderación','Modelo técnico para la evaluación y clasificación de las Cuentas Públicas fiscalizadas.',false);
 bindNav()}
 
@@ -237,10 +461,14 @@ function catalog(){
     </div>
 
     <div class="catalog-kpis">
-      <div class="card smallk"><b>${arr.length}</b>Entes en catálogo</div>
-      <div class="card smallk"><b>${finalizedExercises.length}</b>Ejercicios realizados</div>
-      <div class="card smallk"><b>${Math.max(0,arr.length-finalizedExercises.length)}</b>Pendientes de evaluar</div>
-      <div class="card smallk"><b>${store.get('programs',[]).filter(p=>p.year===state.year).length}</b>Programas cargados</div>
+      <div class="card smallk">
+<b>${arr.length}</b>Entes en catálogo</div>
+      <div class="card smallk">
+<b>${finalizedExercises.length}</b>Ejercicios realizados</div>
+      <div class="card smallk">
+<b>${Math.max(0,arr.length-finalizedExercises.length)}</b>Pendientes de evaluar</div>
+      <div class="card smallk">
+<b>${store.get('programs',[]).filter(p=>p.year===state.year).length}</b>Programas cargados</div>
     </div>`;
 
   if(arr.length){
@@ -282,7 +510,8 @@ function catalog(){
         </table>
       </div>`;
   }else{
-    c += `<div class="empty">No hay entes cargados para ${state.year}.<br><br>Carga el PDF del Programa Anual de Auditorías o agrega un ente manualmente.</div>`;
+    c += `<div class="empty">No hay entes cargados para ${state.year}.<br>
+<br>Carga el PDF del Programa Anual de Auditorías o agrega un ente manualmente.</div>`;
   }
 
   $('#app').innerHTML = layout(
@@ -359,9 +588,12 @@ function entityEditorModal(index=null){
       </div>
 
       <div class="audit-flags editor-audit-flags">
-        <label><input type="checkbox" id="entityCompliance" ${entity.compliance?'checked':''}> Cumplimiento y Gestión Financiera</label>
-        <label><input type="checkbox" id="entityWork" ${entity.work?'checked':''}> Obra Pública</label>
-        <label><input type="checkbox" id="entityPerformance" ${entity.performance?'checked':''}> Desempeño</label>
+        <label>
+<input type="checkbox" id="entityCompliance" ${entity.compliance?'checked':''}> Cumplimiento y Gestión Financiera</label>
+        <label>
+<input type="checkbox" id="entityWork" ${entity.work?'checked':''}> Obra Pública</label>
+        <label>
+<input type="checkbox" id="entityPerformance" ${entity.performance?'checked':''}> Desempeño</label>
       </div>
 
       <div id="entityEditorMessage" class="catalog-message info">
@@ -477,7 +709,10 @@ function uploadModal(){
       </div>
 
       <div id="ocrProgressWrap" class="ocr-progress-wrap" hidden>
-        <div class="ocr-progress-track"><div id="ocrProgressBar"></div></div>
+        <div class="ocr-progress-track">
+<div id="ocrProgressBar">
+</div>
+</div>
         <small id="ocrProgressText">Preparando análisis…</small>
       </div>
 
@@ -485,7 +720,8 @@ function uploadModal(){
         <div class="catalog-preview-head">
           <div>
             <div class="section-title">Vista previa del catálogo</div>
-            <div class="subtitle"><span id="candidateCount">0</span> entes seleccionados · revisa los datos antes de guardar.</div>
+            <div class="subtitle">
+<span id="candidateCount">0</span> entes seleccionados · revisa los datos antes de guardar.</div>
           </div>
           <div class="preview-actions">
             <button class="btn" id="selectAll">Seleccionar todos</button>
@@ -507,7 +743,8 @@ function uploadModal(){
                 <th class="catalog-action-col">Acción</th>
               </tr>
             </thead>
-            <tbody id="candidateBody"></tbody>
+            <tbody id="candidateBody">
+</tbody>
           </table>
         </div>
       </section>
@@ -564,9 +801,15 @@ function uploadModal(){
       <td>
         <select class="candidate-type">${typeOptions(candidate.type)}</select>
       </td>
-      <td class="candidate-flag"><input class="candidate-compliance" type="checkbox" ${candidate.compliance?'checked':''}></td>
-      <td class="candidate-flag"><input class="candidate-work" type="checkbox" ${candidate.work?'checked':''}></td>
-      <td class="candidate-flag"><input class="candidate-performance" type="checkbox" ${candidate.performance?'checked':''}></td>
+      <td class="candidate-flag">
+<input class="candidate-compliance" type="checkbox" ${candidate.compliance?'checked':''}>
+</td>
+      <td class="candidate-flag">
+<input class="candidate-work" type="checkbox" ${candidate.work?'checked':''}>
+</td>
+      <td class="candidate-flag">
+<input class="candidate-performance" type="checkbox" ${candidate.performance?'checked':''}>
+</td>
       <td class="catalog-action-col">
         <button class="icon-btn danger candidate-delete" title="Eliminar" aria-label="Eliminar">×</button>
       </td>`;
@@ -1140,7 +1383,26 @@ function escapeHtmlAttr(value=''){
    Se alimenta automáticamente de ejercicios finalizados.
    ========================================================= */
 function results(){let a=finalized();
-let c=a.length?`<div class="toolbar"><input id="searchRes" placeholder="Buscar ente…" style="padding:10px;border:1px solid var(--border);border-radius:7px"><button class="btn" id="exportCsv">⇩ Exportar CSV</button></div><div class="tablewrap"><table class="table"><thead><tr><th>Ente fiscalizado</th><th>Tipo de ente</th><th>Obra pública</th><th>Base aplicable</th><th>Puntaje</th><th>Criterios mayores</th><th>Resultado</th></tr></thead><tbody id="resBody">${resultRows(a)}</tbody></table></div>`:`<div class="empty">No existen ejercicios finalizados para ${state.year}.</div>`;
+let c=a.length?`<div class="toolbar">
+<input id="searchRes" placeholder="Buscar ente…" style="padding:10px;border:1px solid var(--border);border-radius:7px">
+<button class="btn" id="exportCsv">⇩ Exportar CSV</button>
+</div>
+<div class="tablewrap">
+<table class="table">
+<thead>
+<tr>
+<th>Ente fiscalizado</th>
+<th>Tipo de ente</th>
+<th>Obra pública</th>
+<th>Base aplicable</th>
+<th>Puntaje</th>
+<th>Criterios mayores</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody id="resBody">${resultRows(a)}</tbody>
+</table>
+</div>`:`<div class="empty">No existen ejercicios finalizados para ${state.year}.</div>`;
 $('#app').innerHTML=layout(c,'Resultados de Ponderación','Consulta y compara los resultados de los ejercicios finalizados.');
 bindNav();
 let s=$('#searchRes');
@@ -1152,7 +1414,17 @@ a1.href=u;
 a1.download=`resultados_${state.year}.csv`;
 a1.click();
 URL.revokeObjectURL(u)}}
-function resultRows(a){return a.map(x=>`<tr><td>${x.entity}</td><td>${x.type||'—'}</td><td>${x.work?'Sí':'No'}</td><td>${x.base}</td><td><b>${x.score.toFixed(2)}</b></td><td>${x.majorOk?'<span class="status-ok">Cumple</span>':'<span class="status-bad">Incumple</span>'}</td><td class="${x.result==='APROBADA'?'status-ok':'status-bad'}">${x.result}</td></tr>`).join('')}
+function resultRows(a){return a.map(x=>`<tr>
+<td>${x.entity}</td>
+<td>${x.type||'—'}</td>
+<td>${x.work?'Sí':'No'}</td>
+<td>${x.base}</td>
+<td>
+<b>${x.score.toFixed(2)}</b>
+</td>
+<td>${x.majorOk?'<span class="status-ok">Cumple</span>':'<span class="status-bad">Incumple</span>'}</td>
+<td class="${x.result==='APROBADA'?'status-ok':'status-bad'}">${x.result}</td>
+</tr>`).join('')}
 
 /* =========================================================
    10. MODELO DE DATOS Y CÁLCULO DE PONDERACIÓN
@@ -1179,19 +1451,83 @@ return {raw:r,base,score,majorOk,result}}
 function newExercise(){let cats=store.get('catalogs',{}), ents=cats[state.year]||[];
 if(!state.current||state.current.year!==state.year)state.current=blankExercise();
 let x=state.current,c=calc(x);
-let content=`<div class="wizard">${['Criterios mayores','Variables de Riesgo','Solventación','Control y Transparencia','Rendición de Cuentas','Resultado'].map((s,i)=>`<div class="step ${state.step===i+1?'active':''}" data-n="${i+1}">${s}</div>`).join('')}</div><div class="card" style="margin-bottom:14px"><div class="fields"><div class="field"><label>Ejercicio fiscal</label><select id="newYear">${years().map(y=>`<option ${y===state.year?'selected':''}>${y}</option>`).join('')}</select></div><div class="field"><label>Ente fiscalizado</label><select id="entity"><option value="">Seleccionar ente…</option>${ents.map(e=>`<option ${e.name===x.entity?'selected':''}>${e.name}</option>`).join('')}</select></div></div></div>${!ents.length?`<div class="empty">Primero carga el catálogo de entes para ${state.year} desde el módulo Catálogo.</div>`:`<div class="formgrid"><div class="form-main">${stepHtml(x)}</div><aside class="card resultcard"><div class="section-title">Resultado actual</div><div class="bigscore">${c.score.toFixed(2)}</div><div>/ 100</div><hr style="border:0;border-top:1px solid var(--border);margin:18px 0"><small>Base aplicable</small><h3>${c.base} pts</h3><p class="${c.majorOk?'status-ok':'status-bad'}">${c.result}</p><div class="progress"><div style="width:${Math.min(100,c.score)}%"></div></div></aside></div><div style="display:flex;justify-content:space-between;margin-top:14px"><button class="btn" id="prev">Anterior</button><div><button class="btn" id="draft">Guardar borrador</button> <button class="btn primary" id="next">${state.step===6?'Finalizar ejercicio':'Siguiente →'}</button></div></div>`}`;
+let content=`<div class="wizard">${['Criterios mayores','Variables de Riesgo','Solventación','Control y Transparencia','Rendición de Cuentas','Resultado'].map((s,i)=>`<div class="step ${state.step===i+1?'active':''}" data-n="${i+1}">${s}</div>`).join('')}</div>
+<div class="card" style="margin-bottom:14px">
+<div class="fields">
+<div class="field">
+<label>Ejercicio fiscal</label>
+<select id="newYear">${years().map(y=>`<option ${y===state.year?'selected':''}>${y}</option>`).join('')}</select>
+</div>
+<div class="field">
+<label>Ente fiscalizado</label>
+<select id="entity">
+<option value="">Seleccionar ente…</option>${ents.map(e=>`<option ${e.name===x.entity?'selected':''}>${e.name}</option>`).join('')}</select>
+</div>
+</div>
+</div>${!ents.length?`<div class="empty">Primero carga el catálogo de entes para ${state.year} desde el módulo Catálogo.</div>`:`<div class="formgrid"><div class="form-main">${stepHtml(x)}</div><aside class="card resultcard"><div class="section-title">Resultado actual</div><div class="bigscore">${c.score.toFixed(2)}</div><div>/ 100</div><hr style="border:0;border-top:1px solid var(--border);margin:18px 0"><small>Base aplicable</small><h3>${c.base} pts</h3><p class="${c.majorOk?'status-ok':'status-bad'}">${c.result}</p><div class="progress"><div style="width:${Math.min(100,c.score)}%"></div></div></aside></div><div style="display:flex;justify-content:space-between;margin-top:14px"><button class="btn" id="prev">Anterior</button><div><button class="btn" id="draft">Guardar borrador</button> <button class="btn primary" id="next">${state.step===6?'Finalizar ejercicio':'Siguiente →'}</button></div></div>`}`;
 $('#app').innerHTML=layout(content,'Nuevo ejercicio de ponderación','Capture las variables para calcular la ponderación.');
 bindNav();
 bindNew(ents)}
-function chk(id,label,v){return `<label><input type="checkbox" id="${id}" ${v?'checked':''}> ${label}</label>`}
-function stepHtml(x){if(state.step===1)return `<div class="card"><div class="section-title">Paso 1 de 6 · Criterios mayores</div><div class="fields"><div class="toggle"><h4>Entrega de Cuenta Pública en tiempo</h4>${chk('major1','Sí, cumple',x.major1)}</div><div class="toggle"><h4>Sistema Contable Armonizado</h4>${chk('major2','Sí, cumple',x.major2)}</div></div></div>`;
-if(state.step===2)return `<div class="card"><div class="section-title">Paso 2 de 6 · Variables de Riesgo</div><div class="fields">${[['doc','Documentación cumple transparencia y veracidad · 1 pt'],['elements','Incluye todos los elementos requeridos · 1 pt'],['inventory','Conciliación de inventarios · 0.2 pts'],['budget','Modificaciones presupuestales · 0.4 pts'],['manual','Manual de remuneraciones · 1.6 pts'],['banks','Conciliaciones bancarias · 1.6 pts'],['suppliers','Relación de proveedores · 0.2 pts'],['report','Informe de Avance de Gestión Financiera · 1 pt'],['sevac','SEvAC anual · 7 pts'],['proc','Procedimiento de adquisición con evidencias · 1 pt'],['annual','Programa anual de adquisiciones · 4 pts'],['worksprogram','Programa Anual de Obras Públicas · 2.5 pts'],['worksfiles','Expedientes unitarios de obra · 1 pt'],['paidnot','Obras pagadas NO ejecutadas · 2.5 pts']].map(([k,l])=>`<div class="toggle">${chk('r_'+k,l,x.risk[k])}</div>`).join('')}</div><div class="section-title" style="margin-top:18px">Reincidencia · 10 pts</div><div class="fields">${['Sistema contable armonizado · 1 pt','Programa anual de adquisiciones · 2 pts','Manual de remuneraciones y tabulador · 3 pts','Excepción a licitación pública · 1 pt','Inventario de bienes muebles e inmuebles · 3 pts'].map((l,i)=>`<div class="toggle">${chk('re_'+i,l,x.risk.reinc[i])}</div>`).join('')}</div></div>`;
-if(state.step===3)return `<div class="card"><div class="section-title">Paso 3 de 6 · Solventación</div><div class="fields">${numfield('countF','Observaciones fincadas',x.solv.countF)}${numfield('countS','Observaciones solventadas',x.solv.countS)}${numfield('inF','Importe fincado · Ingreso',x.solv.inF)}${numfield('inS','Importe solventado · Ingreso',x.solv.inS)}${numfield('outF','Importe fincado · Egreso',x.solv.outF)}${numfield('outS','Importe solventado · Egreso',x.solv.outS)}</div></div>`;
-if(state.step===4)return `<div class="card"><div class="section-title">Paso 4 de 6 · Control y Transparencia</div><p><b>Ley de Disciplina Financiera · 3 pts</b></p><div class="choice">${x.ctrl.ldf.map((v,i)=>chk('ldf_'+i,`T${i+1}`,v)).join('')}</div><p><b>Cuenta Pública en portales · 3 pts</b></p><div class="choice">${x.ctrl.portal.map((v,i)=>chk('po_'+i,`T${i+1}`,v)).join('')}</div></div>`;
-if(state.step===5)return `<div class="card"><div class="section-title">Paso 5 de 6 · Rendición de Cuentas</div><div class="fields">${['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'].map((m,i)=>`<div class="toggle">${chk('mo_'+i,`${m} · 0.75 pts`,x.months[i])}</div>`).join('')}</div></div>`;
+function chk(id,label,v){return `<label>
+<input type="checkbox" id="${id}" ${v?'checked':''}> ${label}</label>`}
+function stepHtml(x){if(state.step===1)return `<div class="card">
+<div class="section-title">Paso 1 de 6 · Criterios mayores</div>
+<div class="fields">
+<div class="toggle">
+<h4>Entrega de Cuenta Pública en tiempo</h4>${chk('major1','Sí, cumple',x.major1)}</div>
+<div class="toggle">
+<h4>Sistema Contable Armonizado</h4>${chk('major2','Sí, cumple',x.major2)}</div>
+</div>
+</div>`;
+if(state.step===2)return `<div class="card">
+<div class="section-title">Paso 2 de 6 · Variables de Riesgo</div>
+<div class="fields">${[['doc','Documentación cumple transparencia y veracidad · 1 pt'],['elements','Incluye todos los elementos requeridos · 1 pt'],['inventory','Conciliación de inventarios · 0.2 pts'],['budget','Modificaciones presupuestales · 0.4 pts'],['manual','Manual de remuneraciones · 1.6 pts'],['banks','Conciliaciones bancarias · 1.6 pts'],['suppliers','Relación de proveedores · 0.2 pts'],['report','Informe de Avance de Gestión Financiera · 1 pt'],['sevac','SEvAC anual · 7 pts'],['proc','Procedimiento de adquisición con evidencias · 1 pt'],['annual','Programa anual de adquisiciones · 4 pts'],['worksprogram','Programa Anual de Obras Públicas · 2.5 pts'],['worksfiles','Expedientes unitarios de obra · 1 pt'],['paidnot','Obras pagadas NO ejecutadas · 2.5 pts']].map(([k,l])=>`<div class="toggle">${chk('r_'+k,l,x.risk[k])}</div>`).join('')}</div>
+<div class="section-title" style="margin-top:18px">Reincidencia · 10 pts</div>
+<div class="fields">${['Sistema contable armonizado · 1 pt','Programa anual de adquisiciones · 2 pts','Manual de remuneraciones y tabulador · 3 pts','Excepción a licitación pública · 1 pt','Inventario de bienes muebles e inmuebles · 3 pts'].map((l,i)=>`<div class="toggle">${chk('re_'+i,l,x.risk.reinc[i])}</div>`).join('')}</div>
+</div>`;
+if(state.step===3)return `<div class="card">
+<div class="section-title">Paso 3 de 6 · Solventación</div>
+<div class="fields">${numfield('countF','Observaciones fincadas',x.solv.countF)}${numfield('countS','Observaciones solventadas',x.solv.countS)}${numfield('inF','Importe fincado · Ingreso',x.solv.inF)}${numfield('inS','Importe solventado · Ingreso',x.solv.inS)}${numfield('outF','Importe fincado · Egreso',x.solv.outF)}${numfield('outS','Importe solventado · Egreso',x.solv.outS)}</div>
+</div>`;
+if(state.step===4)return `<div class="card">
+<div class="section-title">Paso 4 de 6 · Control y Transparencia</div>
+<p>
+<b>Ley de Disciplina Financiera · 3 pts</b>
+</p>
+<div class="choice">${x.ctrl.ldf.map((v,i)=>chk('ldf_'+i,`T${i+1}`,v)).join('')}</div>
+<p>
+<b>Cuenta Pública en portales · 3 pts</b>
+</p>
+<div class="choice">${x.ctrl.portal.map((v,i)=>chk('po_'+i,`T${i+1}`,v)).join('')}</div>
+</div>`;
+if(state.step===5)return `<div class="card">
+<div class="section-title">Paso 5 de 6 · Rendición de Cuentas</div>
+<div class="fields">${['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'].map((m,i)=>`<div class="toggle">${chk('mo_'+i,`${m} · 0.75 pts`,x.months[i])}</div>`).join('')}</div>
+</div>`;
 let c=calc(x);
-return `<div class="card"><div class="section-title">Paso 6 de 6 · Resultado</div><div class="grid2"><div><p><b>Ente:</b> ${x.entity||'—'}</p><p><b>Base aplicable:</b> ${c.base} puntos</p><p><b>Puntaje bruto:</b> ${c.raw.toFixed(2)}</p><p><b>Puntaje final:</b> ${c.score.toFixed(2)} / 100</p></div><div><div class="bigscore">${c.score.toFixed(2)}</div><div class="${c.result==='APROBADA'?'status-ok':'status-bad'}">${c.result}</div></div></div></div>`}
-function numfield(id,label,v){return `<div class="field"><label>${label}</label><input type="number" min="0" step="0.01" id="${id}" value="${v||0}"></div>`}
+return `<div class="card">
+<div class="section-title">Paso 6 de 6 · Resultado</div>
+<div class="grid2">
+<div>
+<p>
+<b>Ente:</b> ${x.entity||'—'}</p>
+<p>
+<b>Base aplicable:</b> ${c.base} puntos</p>
+<p>
+<b>Puntaje bruto:</b> ${c.raw.toFixed(2)}</p>
+<p>
+<b>Puntaje final:</b> ${c.score.toFixed(2)} / 100</p>
+</div>
+<div>
+<div class="bigscore">${c.score.toFixed(2)}</div>
+<div class="${c.result==='APROBADA'?'status-ok':'status-bad'}">${c.result}</div>
+</div>
+</div>
+</div>`}
+function numfield(id,label,v){return `<div class="field">
+<label>${label}</label>
+<input type="number" min="0" step="0.01" id="${id}" value="${v||0}">
+</div>`}
 function bindNew(ents){let x=state.current;
 $('#newYear').onchange=e=>{state.year=+e.target.value;
 state.current=blankExercise();
@@ -1245,7 +1581,13 @@ state.step=1;
 render()}else alert('Borrador guardado en Cloudflare D1.')}catch(e){alert('No se pudo guardar en D1: '+e.message)}}
 
 /* =========================================================
-   13. RENDERIZADO E INICIALIZACIÓN
+   13. CIERRE DE SESIÓN
+   El botón Cerrar se enlaza desde bindNav() y elimina
+   únicamente la sesión visual del navegador.
+   ========================================================= */
+
+/* =========================================================
+   14. RENDERIZADO E INICIALIZACIÓN
    ========================================================= */
 function render(){if(!sessionStorage.getItem('in'))return login();
 if(state.page==='project')project();
@@ -1266,7 +1608,24 @@ async function init(){
     render();
 
   }catch(e){
-    document.querySelector('#app').innerHTML=`<div class="login"><section class="login-card"><div class="login-panel"><img src="assets/logo-uec.png"><h1>SISTEMA DE<br><span>PONDERACIÓN</span><br>DE CUENTAS PÚBLICAS</h1><p>No fue posible conectar con la base institucional.</p><div class="insight" style="max-width:430px;margin:22px auto;text-align:left"><b>Revisa el binding D1:</b> debe llamarse <b>DB</b> y apuntar a <b>ponderacion-uec-db</b>.<br><small>${e.message}</small></div><button class="enter" onclick="location.reload()">REINTENTAR</button></div></section><section class="login-empty"></section></div>`;
+    document.querySelector('#app').innerHTML=`<div class="login">
+<section class="login-card">
+<div class="login-panel">
+<img src="assets/logo-uec.png">
+<h1>SISTEMA DE<br>
+<span>PONDERACIÓN</span>
+<br>DE CUENTAS PÚBLICAS</h1>
+<p>No fue posible conectar con la base institucional.</p>
+<div class="insight" style="max-width:430px;margin:22px auto;text-align:left">
+<b>Revisa el binding D1:</b> debe llamarse <b>DB</b> y apuntar a <b>ponderacion-uec-db</b>.<br>
+<small>${e.message}</small>
+</div>
+<button class="enter" onclick="location.reload()">REINTENTAR</button>
+</div>
+</section>
+<section class="login-empty">
+</section>
+</div>`;
 
   }
 }
