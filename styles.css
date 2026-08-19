@@ -27,7 +27,13 @@
 
 body {
   margin:0;
-  font-family:Inter,Segoe UI,Arial,sans-serif;
+
+  font-family:
+    Tahoma,
+    Verdana,
+    Arial,
+    sans-serif;
+
   background:var(--bg);
   color:var(--text);
 }
@@ -276,7 +282,7 @@ select {
 
   .login-title-small {
     font-size:18px;
-    letter-spacing:2.8px;
+    letter-spacing:3px;
   }
 
   .login-title-main {
