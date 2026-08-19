@@ -34,69 +34,289 @@ button,input,select {
 /* =========================================================
    2. PANTALLA DE INICIO
    ========================================================= */
-.login {
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:minmax(360px,520px) 1fr;
-  background:#eef1ef
-}
+/* =========================================================
+   2. PANTALLA DE INICIO
+   ========================================================= */
 
-.login-card {
-  background:linear-gradient(rgba(6,65,56,.94),rgba(4,62,54,.96)),url('assets/logo-uec.png') center/70% no-repeat;
+.login {
+  position:relative;
+  width:100vw;
+  min-height:100vh;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:40px
+
+  overflow:hidden;
+
+  background-image:url('assets/landing-bg.png');
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-size:cover;
 }
 
+
+/* Capa muy ligera para mejorar lectura del contenido */
+.login-overlay {
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2,28,26,.10) 0%,
+      rgba(2,28,26,.18) 100%
+    );
+
+  pointer-events:none;
+}
+
+
+/* Contenedor central */
+.login-content {
+  position:relative;
+  z-index:2;
+
+  width:100%;
+  min-height:100vh;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:40px 24px;
+}
+
+
+/* Bloque institucional */
 .login-panel {
   width:100%;
-  max-width:400px;
+  max-width:560px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
   text-align:center;
-  color:white
+  color:#ffffff;
 }
 
-.login-panel img {
-  width:190px;
-  height:190px;
-  object-fit:contain
+
+/* Logo */
+.login-logo {
+  display:block;
+
+  width:150px;
+  height:150px;
+
+  object-fit:contain;
+
+  margin:0 0 30px;
 }
 
-.login-panel h1 {
-  font-size:30px;
-  line-height:1.25;
-  margin:28px 0 12px;
-  letter-spacing:.6px
+
+/* Grupo del título */
+.login-title {
+  width:100%;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  margin-bottom:25px;
 }
 
-.login-panel h1 span {
-  color:var(--gold)
+
+/* Primera y tercera línea */
+.login-title-small {
+  font-size:25px;
+  line-height:1.15;
+
+  font-weight:500;
+
+  letter-spacing:4px;
+
+  color:#ffffff;
 }
 
-.login-panel p {
-  line-height:1.6
+
+/* PONDERACIÓN */
+.login-title-main {
+  margin:4px 0 5px;
+
+  font-size:50px;
+  line-height:1.05;
+
+  font-weight:800;
+
+  letter-spacing:2px;
+
+  color:#C9A961;
 }
 
-.goldline {
-  width:180px;
-  height:2px;
-  background:var(--gold);
-  margin:28px auto
+
+/* Subtítulo */
+.login-subtitle {
+  margin:0 0 35px;
+
+  font-size:15px;
+  line-height:1.7;
+
+  font-weight:400;
+
+  letter-spacing:.3px;
+
+  color:rgba(255,255,255,.82);
 }
 
+
+/* Botón principal */
 .enter {
-  background:linear-gradient(#f6e7c7,#e6ca91);
+  width:300px;
+  min-height:54px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+
+  padding:0 28px;
+
   border:0;
   border-radius:9px;
-  padding:16px 34px;
+
+  background:#C9A961;
+
+  color:#102A25;
+
+  font-size:14px;
   font-weight:800;
-  font-size:18px;
+
+  letter-spacing:2px;
+
   cursor:pointer;
-  box-shadow:var(--shadow)
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.20);
+
+  transition:
+    background .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
 }
 
-.login-empty {
-  background:linear-gradient(135deg,#f8faf9,#e8eeeb)
+
+.enter:hover {
+  background:#B9974F;
+
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 13px 30px rgba(0,0,0,.25);
+}
+
+
+.enter:active {
+  transform:translateY(0);
+}
+
+
+/* Flecha del botón */
+.enter-arrow {
+  font-size:21px;
+  line-height:1;
+
+  font-weight:500;
+
+  transform:translateY(-1px);
+}
+
+
+/* Texto debajo del botón */
+.login-access {
+  margin:17px 0 0;
+
+  font-size:11px;
+  line-height:1.4;
+
+  font-weight:400;
+
+  letter-spacing:.5px;
+
+  color:rgba(255,255,255,.66);
+}
+
+
+/* =========================================================
+   RESPONSIVE DE PANTALLA DE INICIO
+   ========================================================= */
+
+@media(max-width:700px) {
+
+  .login-content {
+    padding:30px 20px;
+  }
+
+  .login-panel {
+    max-width:430px;
+  }
+
+  .login-logo {
+    width:125px;
+    height:125px;
+
+    margin-bottom:26px;
+  }
+
+  .login-title-small {
+    font-size:18px;
+    letter-spacing:2.8px;
+  }
+
+  .login-title-main {
+    font-size:38px;
+  }
+
+  .login-subtitle {
+    font-size:13px;
+    margin-bottom:30px;
+  }
+
+  .enter {
+    width:min(300px, 90vw);
+  }
+}
+
+
+@media(max-height:700px) {
+
+  .login-content {
+    padding-top:25px;
+    padding-bottom:25px;
+  }
+
+  .login-logo {
+    width:120px;
+    height:120px;
+
+    margin-bottom:20px;
+  }
+
+  .login-title {
+    margin-bottom:18px;
+  }
+
+  .login-title-main {
+    font-size:43px;
+  }
+
+  .login-title-small {
+    font-size:21px;
+  }
+
+  .login-subtitle {
+    margin-bottom:25px;
+  }
 }
 
 /* =========================================================
@@ -629,13 +849,7 @@ button,input,select {
 }
 
 @media(max-width:650px) {
-  .login {
-    grid-template-columns:1fr
-  }
-
-  .login-empty {
-    display:none
-  }
+  
 
   .main {
     padding:18px 14px
