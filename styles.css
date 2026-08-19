@@ -635,7 +635,103 @@ select {
   gap:8px 28px;
   font-size:13px;
 }
+/* =========================================================
+   METODOLOGÍA · ESTRUCTURA GENERAL
+   ========================================================= */
 
+.methodology-page {
+  display:grid;
+  gap:16px;
+}
+
+.methodology-intro {
+  padding:24px;
+}
+
+.methodology-description {
+  max-width:900px;
+
+  margin:
+    0
+    0
+    22px;
+
+  color:var(--muted);
+
+  font-size:14px;
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   VALORES DEL PROYECTO
+   ========================================================= */
+
+.methodology-values {
+  display:grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap:12px;
+}
+
+.methodology-value {
+  display:flex;
+  align-items:center;
+
+  gap:12px;
+
+  padding:15px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:9px;
+
+  background:#fafbfa;
+}
+
+.methodology-value-icon {
+  width:38px;
+  height:38px;
+
+  flex:
+    0
+    0
+    38px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:50%;
+
+  background:
+    rgba(11,79,69,.08);
+
+  color:var(--green);
+
+  font-size:18px;
+  font-weight:800;
+}
+
+.methodology-value b {
+  display:block;
+
+  margin-bottom:4px;
+
+  font-size:13px;
+}
+
+.methodology-value span {
+  display:block;
+
+  color:var(--muted);
+
+  font-size:11px;
+  line-height:1.4;
+}
 /* =========================================================
    7. BOTONES, TABLAS Y CATÁLOGO
    ========================================================= */
