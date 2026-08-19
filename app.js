@@ -39,9 +39,10 @@ const store={
    y nombres que aparecen en el menú lateral.
    ========================================================= */
 let state = { page: 'project', year: 2024, step: 1, current: null };
+let methodologyComponent = 'risk';
 
 const menu = [
-  ['project', '▣', 'Proyecto de Ponderación'],
+  ['project', '▣', 'Metodología'],
   ['summary', '⌂', 'Resumen'],
   ['results', '▤', 'Resultados'],
   ['new', '＋', 'Nuevo ejercicio'],
