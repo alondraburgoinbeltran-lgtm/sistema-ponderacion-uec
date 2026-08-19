@@ -3,8 +3,8 @@
    Cambia aquí los colores globales de toda la app.
    ========================================================= */
 :root {
-  --green:#0b4f45;
-  --green2:#073e37;
+  --green:#082402;
+  --green2:#103D01;
   --gold:#d5b677;
   --cream:#f4ead5;
 
@@ -341,7 +341,7 @@ select {
 }
 
 .sidebar {
-  background:linear-gradient(#0a5146,#073d36);
+  background:#082402
   color:white;
   padding:20px 14px;
   display:flex;
