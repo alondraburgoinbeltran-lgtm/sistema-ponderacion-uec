@@ -341,13 +341,20 @@ select {
 }
 
 .sidebar {
-  background:#082402
-  color:white;
-  padding:20px 14px;
+  background:#063F36 !important;
+
+  color:#ffffff;
+
+  padding:
+    20px
+    14px;
+
   display:flex;
   flex-direction:column;
+
   position:sticky;
   top:0;
+
   height:100vh;
 }
 
@@ -369,20 +376,30 @@ select {
 
 .nav button {
   display:flex;
-  gap:10px;
   align-items:center;
-  padding:12px 13px;
+
+  gap:10px;
+
+  padding:
+    12px
+    13px;
+
   border:0;
   border-radius:8px;
+
   background:transparent;
-  color:#fff;
+
+  color:#ffffff;
+
   text-align:left;
+
   cursor:pointer;
 }
 
 .nav button.active,
 .nav button:hover {
-  background:rgba(255,255,255,.13);
+  background:
+    rgba(255,255,255,.13);
 }
 
 .sidebar-bottom {
